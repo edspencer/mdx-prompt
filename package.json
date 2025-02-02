@@ -1,0 +1,78 @@
+{
+  "name": "mdx-prompt",
+  "version": "0.1.0",
+  "description": "Use MDX to render high quality LLM prompts",
+  "keywords": [
+    "mdx",
+    "jsx",
+    "ai",
+    "llm",
+    "typescript"
+  ],
+  "homepage": "https://github.com/edspencer/mdx-prompt",
+  "main": "./dist/index.cjs.js",
+  "module": "./dist/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs.js"
+    },
+    "./components": {
+      "types": "./dist/types/components/index.d.ts",
+      "import": "./dist/components/index.js",
+      "require": "./dist/components/index.cjs.js"
+    }
+  },
+  "files": [
+    "/dist/**/*"
+  ],
+  "scripts": {
+    "test": "npx jest",
+    "build": "tsc && rollup -c",
+    "build:watch": "concurrently \"tsc --watch\" \"rollup -c --watch\"",
+    "ci:version": "changeset version",
+    "ci:publish": "tsc && rollup -c && changeset publish",
+    "check-exports": "attw --pack  . --ignore-rules=cjs-resolves-to-esm",
+    "format": "prettier --write src/**/*",
+    "lint": "prettier --check src/**/*"
+  },
+  "bugs": {
+    "url": "https://github.com/edspencer/mdx-prompt/issues"
+  },
+  "author": "Ed Spencer (https://edspencer.net)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edspencer/mdx-prompt.git"
+  },
+  "dependencies": {
+    "rehype-format": "^5.0.1",
+    "rehype-parse": "^9.0.1",
+    "rehype-stringify": "^10.0.1",
+    "next-mdx-remote": "^5.0.0",
+    "unified": "^11.0.5"
+  },
+  "peerDependencies": {
+    "react": ">=19",
+    "react-dom": ">=19"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.17.3",
+    "@changesets/cli": "^2.27.11",
+    "@rollup/plugin-commonjs": "^28.0.2",
+    "@rollup/plugin-node-resolve": "^16.0.0",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "@types/node": "^22.10.7",
+    "@types/react": ">=18",
+    "@types/react-dom": ">=18",
+    "concurrently": "^9.1.2",
+    "prettier": "^3.4.2",
+    "rollup": "^4.31.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-typescript2": "^0.36.0",
+    "typescript": "^5.7.3",
+    "tsx": "^4.19.2"
+  },
+  "pnpm": { "overrides": { "estree-walker": "2.0.2" } }
+}

@@ -1,0 +1,71 @@
+# Node.js
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm/
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Environment variables
+.env
+.env.test
+.env.production
+
+# Dist directory
+dist/
+
+# Build directories
+build/
+.tmp/
+out/
+
+# Coverage directory used by tools like istanbul or cypress
+coverage/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# IDE files
+.vscode/
+.idea/
+.DS_Store
+
+# macOS specific files
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows specific files
+Thumbs.db
+Desktop.ini
+
+# Optional lock files
+package-lock.json
+yarn.lock
+.pnpm-lock.yaml
+
+# TypeScript build artifacts
+*.tsbuildinfo
+
+# Lint and formatting results
+stylelint.cache
+
+mdx-prompt-*.tgz
