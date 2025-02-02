@@ -1,8 +1,4 @@
-type PromptProps = {
-  children?: React.ReactNode;
-};
-
-export const Prompt: React.FC<PromptProps> = ({ children }) => {
+export function Prompt({ children }: { children: React.ReactNode }) {
   return children;
 };
 

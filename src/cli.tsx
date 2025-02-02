@@ -1,5 +1,4 @@
 import { renderMDX } from './index';
-import {renderToStaticMarkup} from 'react-dom/server';
 
 import { Prompt, Purpose, Instructions } from './components/index';
 
@@ -15,6 +14,6 @@ const MyPrompt = () => {
 
 // Render the component to string inside an async IIFE
 (async () => {
-  const output = await renderMDX(<MyPrompt />, renderToStaticMarkup);
+  const output = await renderMDX(<MyPrompt />);
   console.log(output);
 })();
