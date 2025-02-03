@@ -23,6 +23,16 @@
       "types": "./dist/types/components/index.d.ts",
       "import": "./dist/components/index.js",
       "require": "./dist/components/index.cjs.js"
+    },
+    "./components/html": {
+      "types": "./dist/types/components/html.d.ts",
+      "import": "./dist/components/html.js",
+      "require": "./dist/components/html.cjs.js"
+    },
+    "./render": {
+      "types": "./dist/types/render.d.ts",
+      "import": "./dist/render.js",
+      "require": "./dist/render.cjs.js"
     }
   },
   "files": [
