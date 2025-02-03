@@ -1,5 +1,11 @@
 # mdx-prompt
 
+## 0.3.1
+
+### Patch Changes
+
+- cae1715: Fix logo image path
+
 ## 0.3.0
 
 ### Minor Changes
