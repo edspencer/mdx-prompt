@@ -1,6 +1,6 @@
 # mdx-prompt
 
-![mdx-prompt logo](/docs/mdx-prompt-log-wide.png)
+![mdx-prompt logo](/docs/mdx-prompt-logo-wide.png)
 
 `mdx-prompt` is a lightweight library enabling React (and MDX) developers to write large language model (LLM) prompts as JSX components. By defining your prompts in JSX or MDX, you can achieve a high degree of composability, reusability, and clarity for both simple and complex prompt designs.
 
