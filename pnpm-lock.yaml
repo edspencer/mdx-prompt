@@ -15,10 +15,10 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0(@types/react@19.0.8)(acorn@8.14.0)(react@19.0.0)
       react:
-        specifier: '>=19'
+        specifier: '>=18'
         version: 19.0.0
       react-dom:
-        specifier: '>=19'
+        specifier: '>=18'
         version: 19.0.0(react@19.0.0)
       rehype-format:
         specifier: ^5.0.1

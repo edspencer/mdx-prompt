@@ -3,7 +3,7 @@ import { compileMDX } from 'next-mdx-remote/rsc';
 import { renderToStaticMarkup } from 'react-dom/server';
 
 import * as promptComponents from './components/prompt';
-import * as htmlComponents from './components/html';
+import { htmlComponents } from './components/html';
 
 import { prettyPrompt } from './utils';
 
