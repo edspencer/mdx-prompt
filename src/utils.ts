@@ -19,5 +19,5 @@ export function prettyPrompt(rawHtml: string): string {
     .use(rehypeStringify)
     .processSync(rawHtml);
 
-  return String(file)
+  return String(file).replace(/^\n/, '');
 }
