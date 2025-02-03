@@ -1,5 +1,16 @@
 # mdx-prompt
 
+## 0.3.0
+
+### Minor Changes
+
+- 2632bd2: Added README
+
+### Patch Changes
+
+- b8b54aa: Tweak exports to prevent exporting server only stuff by default
+- 30af384: Strip leading newline in prettyPrompt response
+
 ## 0.2.0
 
 ### Minor Changes
