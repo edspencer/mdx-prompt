@@ -24,6 +24,8 @@ Many developers end up piecing together a big template string for an LLM prompt.
    - [\<OutputFormat>](#outputformat)
    - [\<ChatHistory>](#chathistory)
    - [\<Variables>](#variables)
+   - [\<Data>](#data)
+   - [\<Tools>](#tools)
 5. [Rendering Prompts](#rendering-prompts)
    - [Using `renderMDX` (Inline Usage)](#using-rendermdx-inline-usage)
    - [Using `renderMDXPromptFile` (MDX File Usage)](#using-rendermdxpromptfile-mdx-file-usage)
@@ -298,6 +300,52 @@ export function Variables({ children }: { children: React.ReactNode }) {
 ```
 A container for any input data you want to pass, especially if it doesn’t neatly fit in other sections. Sometimes you might place `<ChatHistory>` inside `<Variables>`, or custom React components that render your domain data.
 
+### `<Data>`
+
+**Signature**:
+```tsx
+export function Data({ children }: { children: React.ReactNode }) {
+  return <data>{children}</data>;
+}
+```
+`<Data>` is now the preferred way of passing in data for prompt generation, replacing or complementing `<InputFormat>`. Use it to embed raw data (e.g., JSON) into your prompt. For example:
+
+```jsx
+<Variables>
+  <Data>{JSON.stringify(data, null, 2)}</Data>
+</Variables>
+```
+
+### `<Tools>`
+
+**Signature**:
+```tsx
+export function Tools({ children }: { children: React.ReactNode }) {
+  return <tools>{children}</tools>;
+}
+```
+Use `<Tools>` to list tool instructions or capabilities that the LLM can utilize, such as integration points or helper functions. For instance:
+
+```jsx
+<Tools>
+  <Tool>
+    <name>updateDocument</name>
+    <summary>call this tool if the user is updating an existing document</summary>
+
+    <usage>
+      **Using \`updateDocument\`:**
+      - Default to full document rewrites for major changes
+      - Use targeted updates only for specific, isolated changes
+      - Follow user instructions for which parts to modify
+
+      Do not update document right after creating it. Wait for user feedback or request to update it.
+    </usage>
+  </Tool>
+</Tools>
+
+You can freeform anything you like inside the Tool description - the name, summary, usage, and any other XML tags in this example are just the way I happened to write this tool.
+```
+
 ---
 
 ## Rendering Prompts
@@ -362,12 +410,18 @@ Example `.mdx` file (`extract-achievements.mdx`):
     from user messages. Follow the instructions carefully.
   </Purpose>
 
+  <Data>{JSON.stringify(data, null, 2)}</Data>
+  
+  <Tools>
+    <Tool name="GitHub">Extract commit achievements</Tool>
+    <Tool name="Slack">Send a notification</Tool>
+  </Tools>
+  
   <Instructions>
     <Instruction>Include a clear, action-oriented title for each achievement.</Instruction>
     <Instruction>Do not speculate or invent details.</Instruction>
   </Instructions>
 
-  <InputFormat>{data.message}</InputFormat>
   <Variables>
     <UserInput>{data.message}</UserInput>
   </Variables>
@@ -451,6 +505,143 @@ export async function GET(
 ```
 
 Then open `[YourApp]/api/prompts/extract-achievements` in the browser and see the final rendered text.
+
+---
+
+## Full Example: Router LLM Prompt
+
+Below is an almost-complete example of the LLM Router prompt used on [bragdoc.ai](https://bragdoc.ai) (a couple of the tools have been truncated for brevity).
+
+This prompt is significantly large, but gives the LLM a well-structured set of instructions on how to complete the often very complex task of performing as a Router LLM.
+
+Most prompts will be significantly simpler than this. Some sections like the lengthy Tool declarations could be extracted like any other React component and reused between different tool-calling LLMs (see the next section):
+
+```mdx
+<Purpose>
+  You are a friendly assistant for bragdoc.ai, which helps users keep a brag document about their achievements at work, as a basis for later generation of performance review documents and weekly summaries for their managers.
+  You help users track their Achievements at work, and generate weekly/monthly/performance review documents.
+
+  You are acting as the Router LLM for bragdoc.ai, so you will receive the whole chat history between yourself and the user, and your job is to act on the most recent message from the user.
+</Purpose>
+
+<Background>
+This application allows users to log their Achievements at work, organizing them by project and company.
+The Achievement data is later used to generate weekly/monthly/performance review documents.
+</Background>
+
+Here are the relevant parts of the database schema:
+
+<schema>
+  <table name="Achievement">
+    <column name="id" type="uuid" />
+    <column name="title" type="string" />
+    <column name="description" type="string" />
+    <column name="date" type="date" />
+    <column name="companyId" type="uuid" />
+    <column name="projectId" type="uuid" />
+    <column name="eventStart" type="date" />
+    <column name="eventEnd" type="date" />
+    <column name="impact" type="number" desc="1, 2, or 3 where 3 is high impact" />
+    <column name="impactSource" type="string" desc="Impact rated by user or llm" />
+  </table>
+  <table name="Company">
+    <column name="id" type="uuid" />
+    <column name="name" type="string" />
+  </table>
+  <table name="Project">
+    <column name="id" type="uuid" />
+    <column name="name" type="string" />
+  </table>
+</schema>
+
+<Instructions>
+  <Instruction>Keep your responses concise and helpful.</Instruction>
+  <Instruction>If the user tells you about things they've done at work, call the extractAchievements tool.</Instruction>
+  <Instruction>When the user asks you to generate a report, call the createDocument tool (you will be given the Achievements, Companies and Projects data that you need).</Instruction>
+  <Instruction>Only call the extractAchievements tool once if you detect any number of Achievements in the chat message you examine - the tool will extract all of the achievements in that message and return them to you</Instruction>
+</Instructions>
+
+You will be given the following data:
+
+<InputFormat>
+  <chat-history>The chat history between the user and the chatbot</chat-history>
+  <user-input>The message from the user</user-input>
+  <companies>All of the companies that the user works at (or has worked at)</companies>
+  <projects>All of the projects that the user works on (or has worked on)</projects>
+  <today>Today&apos;s date</today>
+</InputFormat>
+
+These are the tools available to you. It may be appropriate to call one or more tools, potentially in a certain order. Other times it will not be necessary to call any tools, in which case you should just reply as normal:
+
+<Tools>
+  <Background>
+    Blocks is a special user interface mode that helps users with writing, editing, and other content creation tasks.
+    When block is open, it is on the right side of the screen, while the conversation is on the left side.
+    When creating or updating documents, changes are reflected in real-time on the blocks and visible to the user.
+    This is a guide for using blocks tools: \`createDocument\` and \`updateDocument\`, 
+    which render content on a blocks beside the conversation.
+  </Background>
+  <Tool>
+    <name>extractAchievements</name> 
+    <summary>call this tool if the user tells you about things they've done at work. The extractAchievements tool will automatically be passed the user's message, companies and projects, but as you have also been given the projects and companies, please pass extractAchievements the appropriate companyId and/or projectId, if applicable. A user may be talking about Achievements not linked to a project.</summary>
+
+    <when-to-use>
+      **When to use extractAchievements:**
+      - When the user is telling you about things they've done at work
+      - When the user provides an update to an existing Achievement
+      - Only call the extractAchievements tool once. Do not pass it any arguments
+      - extractAchievements already has the full conversation history and will use it to generate Achievements
+    </when-to-use>
+
+
+    <when-not-to-use>
+    **When NOT to use extractAchievements:**
+    - When the user is requesting information about existing Achievements
+    - When the user is requesting information about existing documents
+    </when-not-to-use>
+  </Tool>
+  ... more tools here
+  <Tool>
+    <name>createProject</name>
+    <summary>Creates a new Project</summary>
+
+    <when-to-use>
+      Call this tool if the user either explicitly asks you to create a new project, or if it is clear from the context that the user would like you to do so. For example, if the user says "I started a new project called Project Orion today, so far I got the website skeleton in place and basic auth too", you should create a new project called Project Orion, before calling extractAchievements
+    </when-to-use>
+  </Tool>
+</Tools>
+
+Here are some examples of messages from the user and the tool selection or response you should make:
+
+<Examples>
+  <Example>
+    User: I fixed up the bugs with the autofocus dashboard generation and we launched autofocus version 2.1 this morning.
+    Router LLM: Call extractAchievements tool
+  </Example>
+  <Example>
+    User: Write a weekly report for my work on Project X for the last 7 days.
+    Router LLM: Call createDocument tool, with the days set to 7, and the correct projectId and companyId
+  </Example>
+  <Example>
+    User: I started a new project called Project Orion today, so far I got the website skeleton in place and basic auth too. Please create a new project called Project Orion and call extractAchievements
+    Router LLM: Call createProject tool, and then call extractAchievements tool
+  </Example>
+</Examples>
+
+Here now are the actual data for you to consider:
+
+<Data>
+  <ChatHistory messages={data.chatHistory} />
+  <today>{new Date().toLocaleDateString()}</today>
+  <Companies companies={data.companies} />
+  <Projects projects={data.projects} />
+  <UserInput>{data.message}</UserInput>
+</Data>
+
+Your response:
+```
+
+This example illustrates how to integrate data and tool instructions within an MDX prompt for enhanced LLM routing.
 
 ---
 
