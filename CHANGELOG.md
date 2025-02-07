@@ -1,5 +1,15 @@
 # mdx-prompt
 
+## 0.4.0
+
+### Minor Changes
+
+- e337bfe: Added <Tools> and <Data> components
+
+### Patch Changes
+
+- e337bfe: Added a complex Router LLM example prompt to README
+
 ## 0.3.1
 
 ### Patch Changes
