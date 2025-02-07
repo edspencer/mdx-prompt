@@ -327,12 +327,23 @@ export function Tools({ children }: { children: React.ReactNode }) {
 Use `<Tools>` to list tool instructions or capabilities that the LLM can utilize, such as integration points or helper functions. For instance:
 
 ```jsx
-<Variables>
-  <Tools>
-    <Tool name="GitHub">Extract commit achievements</Tool>
-    <Tool name="Slack">Send notification</Tool>
-  </Tools>
-</Variables>
+<Tools>
+  <Tool>
+    <name>updateDocument</name>
+    <summary>call this tool if the user is updating an existing document</summary>
+
+    <usage>
+      **Using \`updateDocument\`:**
+      - Default to full document rewrites for major changes
+      - Use targeted updates only for specific, isolated changes
+      - Follow user instructions for which parts to modify
+
+      Do not update document right after creating it. Wait for user feedback or request to update it.
+    </usage>
+  </Tool>
+</Tools>
+
+You can freeform anything you like inside the Tool description - the name, summary, usage, and any other XML tags in this example are just the way I happened to write this tool.
 ```
 
 ---
