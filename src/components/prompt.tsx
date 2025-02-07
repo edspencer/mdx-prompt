@@ -144,6 +144,78 @@ export function Variables({ children }: { children: React.ReactNode }) {
 }
 
 /**
+ * The <Data> component renders a <data> tag.
+ * Commonly used to include dynamic or structured data that the LLM should consider.
+ *
+ * @param {object} props
+ * @param {React.ReactNode} props.children - The data or subcomponents that represent your prompt's variables.
+ * @param {string} [props.title] - Optional title attribute for the <data> tag.
+ *
+ * @example
+ * ```tsx
+ * <Data title="User Input">
+ *   <UserInput>{userMessage}</UserInput>
+ *   <Company company={selectedCompany} />
+ * </Data>
+ * ```
+ */
+export function Data({ children, title = 'You are provided with the following data:' }: { children: React.ReactNode; title?: string }) {
+  return <data title={title}>{children}</data>;
+}
+
+/**
+ * The <Tools> component renders a <tools> tag.
+ * Commonly used to include dynamic or structured data that the LLM should consider.
+ * 
+ * If you are sending tools to an LLM using something like the Vercel AI SDK,
+ * and especially if you are using structured responses in your LLM calls, the 
+ * LLM will already be receiving the signatures of all of the tools at separately
+ * so you probably don't need to go into that detail here.
+ *
+ * @param {object} props
+ * @param {React.ReactNode} props.children - The data or subcomponents that represent your prompt's tools.
+ * @param {string} [props.title] - Optional title attribute for the <tools> tag.
+ *
+ * @example
+ * ```tsx
+ * <Tools title="User Input">
+ *   <Tool>createDocument: choose this if the user wants to generate a report.</Tool>
+ *   <Tool>extractAchievements: choose this if the user wants to log their achievements.</Tool>
+ * </Data>
+ * ```
+ */
+export function Tools({ children, title = 'You are provided with the following tools:' }: { children: React.ReactNode; title?: string }) {
+  return <tools title={title}>{children}</tools>;
+}
+
+/**
+ * The <Tool> component renders an <tool> tag.
+ * Often used inside <Tools>, but can be used standalone as well.
+ *
+ * @param {object} props
+ * @param {React.ReactNode} [props.children] - The text or content of the tool.
+ * @param {object} [props.dangerouslySetInnerHTML] - Optionally set HTML content directly.
+ *
+ * @example
+ * ```tsx
+ * <Tool>createDocument: choose this if the user wants to generate a report.</Tool>
+ * ```
+ */
+export function Tool({
+  children,
+  dangerouslySetInnerHTML,
+}: {
+  children?: React.ReactNode;
+  dangerouslySetInnerHTML?: { __html: string };
+}) {
+  return (
+    <tool dangerouslySetInnerHTML={dangerouslySetInnerHTML}>
+      {children}
+    </tool>
+  );
+}
+
+/**
  * The <Instructions> component renders a <instructions> tag
  * and can map an array of instruction strings to multiple <Instruction> tags.
  * You may also nest <Instruction> elements as children.
