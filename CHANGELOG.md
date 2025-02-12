@@ -1,5 +1,11 @@
 # mdx-prompt
 
+## 0.4.1
+
+### Patch Changes
+
+- ddf081c: Stringify what is passed to ChatHistory to make it more defensive
+
 ## 0.4.0
 
 ### Minor Changes
