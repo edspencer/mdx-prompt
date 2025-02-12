@@ -5,7 +5,7 @@
  * with comprehensive JSDoc comments and sample usage for each of the tags.
  *
  * SAMPLE USAGE (inline JSX):
- * 
+ *
  * ```tsx
  * import React from 'react';
  * import {
@@ -22,35 +22,35 @@
  *   OutputFormat,
  *   ChatHistory
  * } from './prompt';
- * 
+ *
  * export function MyPrompt({ userMessage }: { userMessage: string }) {
  *   return (
  *     <Prompt>
  *       <Purpose>
  *         Your task is to analyze the user’s data and return a structured result.
  *       </Purpose>
- * 
+ *
  *       <Background>
  *         The user has been providing daily updates on their project progress.
  *         We want to summarize these updates.
  *       </Background>
- * 
+ *
  *       <Instructions instructions={['Be concise', 'Focus on metrics if possible']}>
  *         <Instruction>Avoid speculation or guesswork</Instruction>
  *       </Instructions>
- * 
+ *
  *       <Variables>
  *         <UserInput>{userMessage}</UserInput>
  *       </Variables>
- * 
+ *
  *       <InputFormat>
  *         The input consists of a single user message describing their achievements.
  *       </InputFormat>
- * 
+ *
  *       <OutputFormat format="Output a summary with bullet points">
  *         Please respond with structured JSON if possible.
  *       </OutputFormat>
- * 
+ *
  *       <Examples examples={[
  *         'Implemented a caching layer that reduced latency by 40%',
  *         'Refactored logging service to handle 2x traffic'
@@ -159,16 +159,22 @@ export function Variables({ children }: { children: React.ReactNode }) {
  * </Data>
  * ```
  */
-export function Data({ children, title = 'You are provided with the following data:' }: { children: React.ReactNode; title?: string }) {
+export function Data({
+  children,
+  title = 'You are provided with the following data:',
+}: {
+  children: React.ReactNode;
+  title?: string;
+}) {
   return <data title={title}>{children}</data>;
 }
 
 /**
  * The <Tools> component renders a <tools> tag.
  * Commonly used to include dynamic or structured data that the LLM should consider.
- * 
+ *
  * If you are sending tools to an LLM using something like the Vercel AI SDK,
- * and especially if you are using structured responses in your LLM calls, the 
+ * and especially if you are using structured responses in your LLM calls, the
  * LLM will already be receiving the signatures of all of the tools at separately
  * so you probably don't need to go into that detail here.
  *
@@ -184,7 +190,13 @@ export function Data({ children, title = 'You are provided with the following da
  * </Data>
  * ```
  */
-export function Tools({ children, title = 'You are provided with the following tools:' }: { children: React.ReactNode; title?: string }) {
+export function Tools({
+  children,
+  title = 'You are provided with the following tools:',
+}: {
+  children: React.ReactNode;
+  title?: string;
+}) {
   return <tools title={title}>{children}</tools>;
 }
 
@@ -208,11 +220,7 @@ export function Tool({
   children?: React.ReactNode;
   dangerouslySetInnerHTML?: { __html: string };
 }) {
-  return (
-    <tool dangerouslySetInnerHTML={dangerouslySetInnerHTML}>
-      {children}
-    </tool>
-  );
+  return <tool dangerouslySetInnerHTML={dangerouslySetInnerHTML}>{children}</tool>;
 }
 
 /**
@@ -234,20 +242,11 @@ export function Tool({
  * </Instructions>
  * ```
  */
-export function Instructions({
-  instructions = [],
-  children,
-}: {
-  instructions?: string[];
-  children?: React.ReactNode;
-}) {
+export function Instructions({ instructions = [], children }: { instructions?: string[]; children?: React.ReactNode }) {
   return (
     <instructions>
-      {instructions.map((instruction) => (
-        <Instruction
-          key={instruction.replace(/\s/g, '')}
-          dangerouslySetInnerHTML={{ __html: instruction }}
-        />
+      {instructions.map(instruction => (
+        <Instruction key={instruction.replace(/\s/g, '')} dangerouslySetInnerHTML={{ __html: instruction }} />
       ))}
       {children}
     </instructions>
@@ -274,11 +273,7 @@ export function Instruction({
   children?: React.ReactNode;
   dangerouslySetInnerHTML?: { __html: string };
 }) {
-  return (
-    <instruction dangerouslySetInnerHTML={dangerouslySetInnerHTML}>
-      {children}
-    </instruction>
-  );
+  return <instruction dangerouslySetInnerHTML={dangerouslySetInnerHTML}>{children}</instruction>;
 }
 
 /**
@@ -336,13 +331,7 @@ export function Example({ children }: { children: React.ReactNode }) {
  * </Examples>
  * ```
  */
-export function Examples({
-  examples = [],
-  children,
-}: {
-  examples?: string[];
-  children?: React.ReactNode;
-}) {
+export function Examples({ examples = [], children }: { examples?: string[]; children?: React.ReactNode }) {
   return (
     <examples>
       {examples.map((example, i) => (
@@ -431,8 +420,8 @@ export function ChatHistory({ messages }: { messages: { role: string; content: s
   return (
     <chat-history>
       {messages?.map(({ role, content }) => (
-        <message key={content.replace(/\s/g, '')}>
-          {role}: {content}
+        <message key={JSON.stringify(content).replace(/\s/g, '')}>
+          {role}: {JSON.stringify(content, null, 4)}
         </message>
       ))}
     </chat-history>
