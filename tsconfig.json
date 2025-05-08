@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["node", "@types/react"],
+    "types": ["node", "@types/react", "jest"],
     "target": "ES2022",
     "module": "ESNext",
     "lib": ["ES2022", "DOM"],
