@@ -1,6 +1,6 @@
 {
   "name": "mdx-prompt",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Use MDX to render high quality LLM prompts",
   "keywords": [
     "mdx",

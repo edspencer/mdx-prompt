@@ -1,5 +1,11 @@
 # mdx-prompt
 
+## 0.4.2
+
+### Patch Changes
+
+- 45d91be: Fixed an issue with HTML escaping when XML, HTML or JSX is passed in to a prompt
+
 ## 0.4.1
 
 ### Patch Changes
