@@ -40,6 +40,7 @@
   ],
   "scripts": {
     "test": "npx jest",
+    "test:watch": "npx jest --watch",
     "build": "tsc && rollup -c",
     "build:watch": "concurrently \"tsc --watch\" \"rollup -c --watch\"",
     "ci:version": "changeset version",
@@ -57,10 +58,14 @@
     "url": "git+https://github.com/edspencer/mdx-prompt.git"
   },
   "dependencies": {
+    "@swc/jest": "^0.2.38",
+    "jest": "^29.7.0",
+    "next-mdx-remote": "^5.0.0",
     "rehype-format": "^5.0.1",
     "rehype-parse": "^9.0.1",
     "rehype-stringify": "^10.0.1",
-    "next-mdx-remote": "^5.0.0",
+    "ts-jest": "^29.3.2",
+    "ts-node": "^10.9.2",
     "unified": "^11.0.5"
   },
   "peerDependencies": {
@@ -73,16 +78,16 @@
     "@rollup/plugin-commonjs": "^28.0.2",
     "@rollup/plugin-node-resolve": "^16.0.0",
     "@rollup/plugin-typescript": "^12.1.2",
+    "@types/jest": "^29.5.14",
     "@types/node": "^22.10.7",
     "@types/react": ">=18",
     "@types/react-dom": ">=18",
     "concurrently": "^9.1.2",
-    "prettier": "^3.4.2",
     "rollup": "^4.31.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-typescript2": "^0.36.0",
-    "typescript": "^5.7.3",
-    "tsx": "^4.19.2"
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
   },
   "pnpm": {
     "overrides": {

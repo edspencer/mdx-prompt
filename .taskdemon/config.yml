@@ -1,0 +1,22 @@
+projectId: 5e0c3f35-9070-46ee-ba29-45bceee08708
+agents:
+  - name: default
+    agentId: agent_ma9sqrks_edproloc_ed_d745c4b0
+    projectId: 5e0c3f35-9070-46ee-ba29-45bceee08708
+    type:
+      - implement
+      - plan
+      - document
+    workflowPriority:
+      - implement
+      - plan
+      - document
+    settings:
+      pollingInterval: 30
+      maxConcurrent: 3
+      workflowConcurrency:
+        implement: 1
+        plan: 2
+        document: 3
+      autoStart: false
+settings: {}

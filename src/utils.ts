@@ -16,8 +16,10 @@ export function prettyPrompt(rawHtml: string): string {
     // apply standard formatting rules
     .use(rehypeFormat)
     // serialize back to HTML
-    .use(rehypeStringify)
+    .use(rehypeStringify, { allowDangerousHtml: true })
     .processSync(rawHtml);
 
-  return String(file).replace(/^\n/, '');
+  return String(file)
+    .replace(/^\n/, '')
+    .replace(/&#x3C;/g, '<');
 }

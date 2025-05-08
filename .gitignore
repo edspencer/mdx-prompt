@@ -69,3 +69,7 @@ yarn.lock
 stylelint.cache
 
 mdx-prompt-*.tgz
+
+# TaskDemon
+.taskdemon/cache
+**/.claude/settings.local.json

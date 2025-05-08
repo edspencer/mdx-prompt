@@ -1,0 +1,34 @@
+# Test Plan with HTML-like Content
+
+## Task: Create a Component with `<tags>` and HTML-like Content
+
+This is a test plan that contains HTML-like content that should not be escaped:
+
+1. [ ] Create a new component like this:
+   ```jsx
+   <MyComponent>
+     <div className="test">
+       This is a test with <b>bold text</b> and <i>italics</i>
+     </div>
+   </MyComponent>
+   ```
+
+2. [ ] Add support for <custom-elements> like this: 
+   ```html
+   <custom-element>
+     <tag>Content</tag>
+   </custom-element>
+   ```
+
+3. [ ] Parse the following JSON:
+   ```json
+   {
+     "object": {
+       "property": "<value>"
+     }
+   }
+   ```
+
+## Architectural Overview
+
+The component should handle angle brackets (<>) properly without escaping them unnecessarily.
