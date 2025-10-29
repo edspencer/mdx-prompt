@@ -1,5 +1,11 @@
 # mdx-prompt
 
+## 0.4.3
+
+### Patch Changes
+
+- 416be3b: Moved just into devDependencies
+
 ## 0.4.2
 
 ### Patch Changes
